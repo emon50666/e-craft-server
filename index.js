@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config()
 const app = express();
@@ -30,9 +30,29 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const carftCollection = client.db('carftDB').collection('carft')
+
+
+    // read data 
+    app.get('/carft',async(req,res)=>{
+        const cursor = carftCollection.find();
+        const result = await cursor.toArray();
+        res.send(result)
+    })
+
+    app.get('/carft/:id',async(req,res)=>{
+        const id = req.params.id
+        const query = {_id: new ObjectId (id)}
+        const result =  await carftCollection.findOne(query)
+        res.send(result)
+    })
+
     app.post('/carft', async(req,res)=>{
         const newCarft = req.body;
         console.log(newCarft)
+
+        const result = await carftCollection.insertOne(newCarft);
+        res.send(result)
     })
 
 
