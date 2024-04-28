@@ -47,6 +47,16 @@ async function run() {
         res.send(result)
     })
 
+    
+    // user add carft 
+    app.get('/craftlist/:email',async(req,res)=>{
+      console.log(req.params.email)
+      const result = await carftCollection.find({ userEmail: req.params.email}).toArray()
+      res.send(result)
+    })
+  
+
+
     app.post('/carft', async(req,res)=>{
         const newCarft = req.body;
         console.log(newCarft)
