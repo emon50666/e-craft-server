@@ -51,7 +51,7 @@ async function run() {
     // user add carft 
     app.get('/craftlist/:email',async(req,res)=>{
       console.log(req.params.email)
-      const result = await carftCollection.find({ userEmail: req.params.email}).toArray()
+      const result = await carftCollection.find({ email: req.params.email}).toArray()
       res.send(result)
     })
   
@@ -66,6 +66,15 @@ async function run() {
     })
 
 
+
+    // delete craft item api
+    app.delete('/carft/:id',async(req,res)=>{
+      const id = req.params.id
+      const query = {_id: new ObjectId  (id)}
+      const result = await carftCollection.deleteOne(query)
+      res.send(result)
+
+    })
 
 
 
