@@ -31,6 +31,8 @@ async function run() {
     await client.connect();
 
     const carftCollection = client.db('carftDB').collection('carft')
+    const categoryCollection = client.db('carftDB').collection('craftCategory')
+
 
 
     // read data 
@@ -57,6 +59,18 @@ async function run() {
   
 
 
+
+     // carft category_name 
+
+     app.get('/craftlist/:subcategory_Name',async(req,res)=>{
+      console.log(req.params.subcategory_Name)
+      const result = await categoryCollection.find({ subcategory_Name: req.params.subcategory_Name}).toArray()
+      res.send(result)
+    })
+
+
+
+    
     app.post('/carft', async(req,res)=>{
         const newCarft = req.body;
         console.log(newCarft)
@@ -77,6 +91,21 @@ async function run() {
     })
 
 
+    // update craft item api
+    app.put('/carft/:id',async(req,res)=>{
+      const id = req.params.id
+      const filter = {_id: new ObjectId  (id)}
+      const options = {upsert: true}
+      const updateCraft = req.body;
+      const craftItem = {
+        $set:{
+          image:updateCraft.image , item:updateCraft.item , subcategory:updateCraft.subcategory , description:updateCraft.description , price:updateCraft.price , rating:updateCraft.rating , customization:updateCraft.customization , stockStatus:updateCraft.stockStatus , processing:updateCraft.processing ,
+        }
+      }
+      const result = await carftCollection.updateOne(filter,craftItem,options)
+      res.send(result)
+     
+    })
 
 
 
