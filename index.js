@@ -62,15 +62,18 @@ async function run() {
 
      // carft category_name 
 
-     app.get('/craftlist/:subcategory_Name',async(req,res)=>{
+    
+    app.get('/craftlist/:subcategory_Name',async(req,res)=>{
       console.log(req.params.subcategory_Name)
       const result = await categoryCollection.find({ subcategory_Name: req.params.subcategory_Name}).toArray()
       res.send(result)
     })
 
-
-
+ 
     
+
+
+
     app.post('/carft', async(req,res)=>{
         const newCarft = req.body;
         console.log(newCarft)
